@@ -1,0 +1,109 @@
+package panels;
+
+import game.Grid;
+import mediators.Mediator;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class GamePanel extends JPanel {
+    private final Grid grid;
+    private final Mediator mediator;
+    private final int rows;
+    private final int cols;
+    private final Timer timer;
+    private int cellSize;
+    private int delay = 503;
+
+    public GamePanel(Mediator mediator, int rows, int cols) {
+        setBackground(Color.black);
+        setVisible(true);
+        this.rows = rows;
+        this.cols = cols;
+        this.mediator = mediator;
+        cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+
+        grid = new Grid(rows, cols);
+        if (cellSize > 0) {
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = e.getY() / cellSize;
+                    int col = e.getX() / cellSize;
+                    grid.toggleCellState(row, col);
+                    repaint();
+                }
+            });
+        }
+
+        this.timer = new Timer(delay, e -> nextGeneration());
+    }
+
+    public void calculateCellSize() {
+        cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int row = e.getY() / cellSize;
+                int col = e.getX() / cellSize;
+                grid.toggleCellState(row, col);
+                repaint();
+            }
+        });
+    }
+
+    public void start() {
+        timer.start();
+    }
+
+    public void stop() {
+        timer.stop();
+    }
+
+    public void clear() {
+        timer.stop();
+        grid.clearGrid();
+        mediator.displayGeneration(0);
+        repaint();
+    }
+
+    public void nextGeneration() {
+        if (grid.nextGeneration()) {
+            // ezt az erteket visszakell adni a mediatornak
+            int generation = grid.getGeneration();
+            mediator.displayGeneration(generation);
+            repaint();
+        } else {
+            timer.stop();
+        }
+    }
+
+    public void changeDelay(int speed) {
+        this.delay = 1005 - speed*10;
+        System.out.println(delay);
+        timer.stop();
+        timer.setDelay(delay);
+        timer.restart();
+//        this.timer = new Timer(delay, e -> nextGeneration());
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.LIGHT_GRAY);
+        for (int i = 0; i < grid.getRows(); i++) {
+            for (int j = 0; j < grid.getColumns(); j++) {
+                if (grid.getCellState(i, j)) {
+//                    g.setColor(Color.darkGray);
+                    g.setColor(Color.lightGray);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                }
+//                g.setColor(Color.lightGray);
+                g.setColor(Color.darkGray);
+                g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
+            }
+        }
+    }
+}
