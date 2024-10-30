@@ -3,7 +3,7 @@ package mediators;
 import panels.GamePanel;
 import panels.TopPanel;
 
-public class Mediator {
+public class Mediator implements MediatorInterface {
     private GamePanel gamePanel;
     private TopPanel topPanel;
 

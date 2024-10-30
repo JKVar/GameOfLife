@@ -9,15 +9,13 @@ public class Main {
         final int cols = 40;
 
         Mediator mediator = new Mediator();
-        MainFrame mainFrame = new MainFrame(mediator);
         GamePanel gamePanel = new GamePanel(mediator, rows, cols);
         TopPanel topPanel = new TopPanel(mediator);
         mediator.addGamePanel(gamePanel);
         mediator.addTopPanel(topPanel);
 
-
         gamePanel.calculateCellSize();
-
+        MainFrame mainFrame = new MainFrame(mediator);
         mainFrame.add(gamePanel);
         mainFrame.add(topPanel);
     }
