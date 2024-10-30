@@ -3,8 +3,6 @@ package mediators;
 import panels.GamePanel;
 import panels.TopPanel;
 
-import javax.swing.*;
-
 public class Mediator {
     private GamePanel gamePanel;
     private TopPanel topPanel;
@@ -39,5 +37,13 @@ public class Mediator {
 
     public void next() {
         gamePanel.nextGeneration();
+    }
+
+    public void resizePanels(int width, int height) {
+        final int topPanelHeight = 75;
+        final int gpp = 5; // gamePanel padding
+        topPanel.setBounds(0, 0, width, topPanelHeight);
+        gamePanel.setBounds(gpp, topPanelHeight + gpp, width - 2 * gpp, height - topPanelHeight - 2 * gpp);
+        gamePanel.calculateCellSize();
     }
 }

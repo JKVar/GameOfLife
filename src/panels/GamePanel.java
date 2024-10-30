@@ -14,6 +14,7 @@ public class GamePanel extends JPanel {
     private final int rows;
     private final int cols;
     private final Timer timer;
+    private MouseAdapter mouseAdapter;
     private int cellSize;
     private int delay = 503;
 
@@ -27,7 +28,7 @@ public class GamePanel extends JPanel {
 
         grid = new Grid(rows, cols);
         if (cellSize > 0) {
-            addMouseListener(new MouseAdapter() {
+            mouseAdapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     int row = e.getY() / cellSize;
@@ -35,7 +36,8 @@ public class GamePanel extends JPanel {
                     grid.toggleCellState(row, col);
                     repaint();
                 }
-            });
+            };
+            addMouseListener(mouseAdapter);
         }
 
         this.timer = new Timer(delay, e -> nextGeneration());
@@ -43,7 +45,8 @@ public class GamePanel extends JPanel {
 
     public void calculateCellSize() {
         cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
-        addMouseListener(new MouseAdapter() {
+        removeMouseListener(mouseAdapter);
+        mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int row = e.getY() / cellSize;
@@ -51,7 +54,8 @@ public class GamePanel extends JPanel {
                 grid.toggleCellState(row, col);
                 repaint();
             }
-        });
+        };
+        addMouseListener(mouseAdapter);
     }
 
     public void start() {
@@ -81,12 +85,11 @@ public class GamePanel extends JPanel {
     }
 
     public void changeDelay(int speed) {
-        this.delay = 1005 - speed*10;
-        System.out.println(delay);
+//        this.delay =  1005 - speed*10;
+        this.delay = (int) (1005 - Math.log(speed+1)/Math.log(Math.pow(100, 1.0/1000)));
         timer.stop();
         timer.setDelay(delay);
         timer.restart();
-//        this.timer = new Timer(delay, e -> nextGeneration());
     }
 
     @Override
