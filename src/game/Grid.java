@@ -1,19 +1,20 @@
 package game;
 
-public class Grid {
+public class Grid implements GridInterface {
     private boolean[][] grid;
     private final int rows;
     private final int columns;
     private int generation = 0;
-
-    private boolean isOnGrid(int x, int y) {
-        return x >= 0 && x < rows && y >= 0 && y < columns;
-    }
+    private boolean started = false;
 
     public Grid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.grid = new boolean[rows][columns];
+    }
+
+    private boolean isOnGrid(int x, int y) {
+        return x >= 0 && x < rows && y >= 0 && y < columns;
     }
 
     public int getRows() {
@@ -22,16 +23,6 @@ public class Grid {
 
     public int getColumns() {
         return columns;
-    }
-
-    public boolean[][] getGrid() {
-        return grid;
-    }
-
-    public void setCellState(int x, int y, boolean isAlive) {
-        if (isOnGrid(x, y)) {
-            this.grid[x][y] = isAlive;
-        }
     }
 
     public boolean getCellState(int x, int y) {
@@ -95,5 +86,14 @@ public class Grid {
 
     public int getGeneration() {
         return this.generation;
+    }
+
+    @Override
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public boolean isStarted() {
+        return this.started;
     }
 }

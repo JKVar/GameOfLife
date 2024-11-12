@@ -1,6 +1,7 @@
 package panels;
 
-import game.Grid;
+import game.GridInterface;
+import game.ProxyGrid;
 import mediators.Mediator;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GamePanel extends JPanel {
-    private final Grid grid;
+    private final GridInterface grid;
     private final Mediator mediator;
     private final int rows;
     private final int cols;
@@ -26,7 +27,7 @@ public class GamePanel extends JPanel {
         this.mediator = mediator;
         cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
 
-        grid = new Grid(rows, cols);
+        grid = new ProxyGrid(rows, cols);
         if (cellSize > 0) {
             mouseAdapter = new MouseAdapter() {
                 @Override
@@ -60,14 +61,17 @@ public class GamePanel extends JPanel {
 
     public void start() {
         timer.start();
+        grid.setStarted(true);
     }
 
     public void stop() {
         timer.stop();
+        grid.setStarted(false);
     }
 
     public void clear() {
         timer.stop();
+        grid.setStarted(false);
         grid.clearGrid();
         mediator.displayGeneration(0);
         repaint();
@@ -75,12 +79,12 @@ public class GamePanel extends JPanel {
 
     public void nextGeneration() {
         if (grid.nextGeneration()) {
-            // ezt az erteket visszakell adni a mediatornak
             int generation = grid.getGeneration();
             mediator.displayGeneration(generation);
             repaint();
         } else {
             timer.stop();
+            grid.setStarted(false);
         }
     }
 
@@ -89,7 +93,9 @@ public class GamePanel extends JPanel {
         this.delay = (int) (1005 - Math.log(speed+1)/Math.log(Math.pow(100, 1.0/1000)));
         timer.stop();
         timer.setDelay(delay);
-        timer.restart();
+        if (grid.isStarted()) {
+            timer.restart();
+        }
     }
 
     @Override
@@ -99,11 +105,9 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < grid.getRows(); i++) {
             for (int j = 0; j < grid.getColumns(); j++) {
                 if (grid.getCellState(i, j)) {
-//                    g.setColor(Color.darkGray);
                     g.setColor(Color.lightGray);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
-//                g.setColor(Color.lightGray);
                 g.setColor(Color.darkGray);
                 g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }

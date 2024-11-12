@@ -5,8 +5,8 @@ import panels.TopPanel;
 
 public class Main {
     public static void main(String[] args) {
-        final int rows = 40;
-        final int cols = 40;
+        final int rows = 30;
+        final int cols = 30;
 
         Mediator mediator = new Mediator();
         GamePanel gamePanel = new GamePanel(mediator, rows, cols);
