@@ -3,12 +3,10 @@ package panels;
 import mediators.Mediator;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class TopPanel extends JPanel {
-    private JLabel generationLabel;
+    private final JLabel generationLabel;
 
     public TopPanel(Mediator mediator) {
         setBackground(new Color(8, 147, 82));
@@ -21,11 +19,11 @@ public class TopPanel extends JPanel {
         JButton next = new JButton("Next");
         JSlider slider = new JSlider();
 
-        start.addActionListener(e -> mediator.start());
-        stop.addActionListener(e -> mediator.stop());
-        clear.addActionListener(e -> mediator.clear());
-        next.addActionListener(e -> mediator.next());
-        slider.addChangeListener(e -> mediator.setSpeed(slider.getValue()));
+        start.addActionListener(_ -> mediator.start());
+        stop.addActionListener(_ -> mediator.stop());
+        clear.addActionListener(_ -> mediator.clear());
+        next.addActionListener(_ -> mediator.next());
+        slider.addChangeListener(_ -> mediator.setSpeed(slider.getValue()));
 
         add(start);
         add(stop);

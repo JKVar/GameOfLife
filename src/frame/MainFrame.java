@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainFrame extends JFrame {
-
     public MainFrame(Mediator mediator) {
         addWindowListener(new WindowAdapter() {
             @Override
@@ -25,7 +24,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        setMinimumSize(new Dimension(700, 800));
+        setMinimumSize(new Dimension(600, 700));
         setTitle("Game of life");
         setLayout(null);
         setVisible(true);
