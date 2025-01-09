@@ -1,5 +1,7 @@
 package game;
 
+import strategy.Strategy;
+
 public interface GridInterface {
     int getRows();
 
@@ -20,4 +22,10 @@ public interface GridInterface {
     int getGeneration();
 
     void setStarted(boolean started);
+
+    void setStrategy(Strategy strategy);
+
+    void increaseGeneration();
+
+    void setGrid(boolean[][] grid);
 }
