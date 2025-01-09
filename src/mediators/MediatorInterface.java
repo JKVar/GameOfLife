@@ -2,8 +2,9 @@ package mediators;
 
 import panels.GamePanel;
 import panels.TopPanel;
+import strategy.StrategyEnum;
 
- interface MediatorInterface {
+interface MediatorInterface {
 
      void addGamePanel(GamePanel gamePanel);
 
@@ -22,4 +23,6 @@ import panels.TopPanel;
      void next();
 
      void resizePanels(int width, int height);
+
+     void changeStrategy(StrategyEnum strategyType);
 }

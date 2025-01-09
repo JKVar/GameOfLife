@@ -1,16 +1,22 @@
 package game;
 
+import strategy.OriginalStrategy;
+import strategy.Strategy;
+
+// this will be the context in the case of the strategy pattern
 public class Grid implements GridInterface {
     private boolean[][] grid;
     private final int rows;
     private final int columns;
     private int generation = 0;
     private boolean started = false;
+    private Strategy strategy;
 
     public Grid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.grid = new boolean[rows][columns];
+        this.strategy = new OriginalStrategy();
     }
 
     private boolean isOnGrid(int x, int y) {
@@ -50,29 +56,28 @@ public class Grid implements GridInterface {
         return liveNeighbors;
     }
 
-    // visszaterithetnenk egy booleant ami jelezne h tortent-e valtozas
     public boolean nextGeneration() {
-        boolean[][] newGrid = new boolean[rows][columns];
-        boolean hasChanged = false;
-        this.generation++;
+//        boolean[][] newGrid = new boolean[rows][columns];
+//        boolean hasChanged = false;
+//        this.generation++;
+//
+//        for (int row = 0; row < rows; row++) {
+//            for (int col = 0; col < columns; col++) {
+//                int liveNeighbors = countLiveNeighbors(row, col);
+//                if (grid[row][col]) {
+//                    newGrid[row][col] = (liveNeighbors == 2 || liveNeighbors == 3);
+//                } else {
+//                    newGrid[row][col] = liveNeighbors == 3;
+//                }
+//                if (grid[row][col] != newGrid[row][col]) {
+//                    hasChanged = true;
+//                }
+//            }
+//        }
+//
+//        grid = newGrid;
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                int liveNeighbors = countLiveNeighbors(row, col);
-                if (grid[row][col]) {
-                    newGrid[row][col] = (liveNeighbors == 2 || liveNeighbors == 3);
-                } else {
-                    newGrid[row][col] = liveNeighbors == 3;
-                }
-                if (grid[row][col] != newGrid[row][col]) {
-                    hasChanged = true;
-                }
-            }
-        }
-
-        grid = newGrid;
-
-        return hasChanged;
+        return strategy.nextGeneration(this);
     }
 
     public void clearGrid() {
@@ -95,5 +100,17 @@ public class Grid implements GridInterface {
 
     public boolean isStarted() {
         return this.started;
+    }
+
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void setGrid(boolean[][] grid) {
+        this.grid = grid;
+    }
+
+    public void increaseGeneration() {
+        this.generation++;
     }
 }

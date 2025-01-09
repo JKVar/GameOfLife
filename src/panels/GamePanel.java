@@ -3,6 +3,10 @@ package panels;
 import game.GridInterface;
 import game.ProxyGrid;
 import mediators.Mediator;
+import strategy.OriginalStrategy;
+import strategy.StrategyEnum;
+import strategy.DayAndNightStrategy;
+import strategy.HighLifeStrategy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +32,8 @@ public class GamePanel extends JPanel {
         cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
 
         grid = new ProxyGrid(rows, cols);
+//        grid.setStrategy(new HighLifeStrategy());
+//        grid.setStrategy(new DayAndNightStrategy());
         if (cellSize > 0) {
             mouseAdapter = new MouseAdapter() {
                 @Override
@@ -41,7 +47,7 @@ public class GamePanel extends JPanel {
             addMouseListener(mouseAdapter);
         }
 
-        this.timer = new Timer(delay, e -> nextGeneration());
+        this.timer = new Timer(delay, _ -> nextGeneration());
     }
 
     public void calculateCellSize() {
@@ -96,6 +102,22 @@ public class GamePanel extends JPanel {
         if (grid.isStarted()) {
             timer.restart();
         }
+    }
+
+    public void changeStrategy(StrategyEnum strategyType) {
+        switch (strategyType) {
+            case HIGH_LIFE:
+                grid.setStrategy(new HighLifeStrategy());
+                break;
+            case DAY_AND_NIGHT:
+                grid.setStrategy(new DayAndNightStrategy());
+                break;
+            default:
+                grid.setStrategy(new OriginalStrategy());
+                break;
+        }
+
+        this.clear();
     }
 
     @Override

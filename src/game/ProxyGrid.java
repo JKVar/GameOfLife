@@ -1,5 +1,7 @@
 package game;
 
+import strategy.Strategy;
+
 public class ProxyGrid implements GridInterface {
     private final Grid realGrid;
     private boolean started;
@@ -55,7 +57,23 @@ public class ProxyGrid implements GridInterface {
         this.started = started;
     }
 
+    @Override
+    public void setStrategy(Strategy strategy) {
+        this.realGrid.setStrategy(strategy);
+    }
+
+    @Override
+    public void increaseGeneration() {
+        this.realGrid.increaseGeneration();
+    }
+
+    @Override
+    public void setGrid(boolean[][] grid) {
+        this.realGrid.setGrid(grid);
+    }
+
     public boolean isStarted() {
         return this.started;
     }
+
 }
