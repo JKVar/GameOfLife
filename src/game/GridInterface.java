@@ -1,5 +1,6 @@
 package game;
 
+import state.PatternState;
 import strategy.Strategy;
 
 public interface GridInterface {
@@ -10,6 +11,8 @@ public interface GridInterface {
     boolean getCellState(int x, int y);
 
     void toggleCellState(int x, int y);
+
+    void placePatternOnGrid(int x, int y);
 
     int countLiveNeighbors(int x, int y);
 
@@ -27,5 +30,9 @@ public interface GridInterface {
 
     void increaseGeneration();
 
-    void setGrid(boolean[][] grid);
+    void setGrid(CellGrid grid);
+
+    CellGrid getGrid();
+
+    void setPatternState(PatternState state);
 }

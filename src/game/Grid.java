@@ -1,22 +1,26 @@
 package game;
 
+import state.PatternContext;
+import state.PatternState;
 import strategy.OriginalStrategy;
 import strategy.Strategy;
 
 // this will be the context in the case of the strategy pattern
 public class Grid implements GridInterface {
-    private boolean[][] grid;
+    private CellGrid grid;
     private final int rows;
     private final int columns;
     private int generation = 0;
     private boolean started = false;
     private Strategy strategy;
+    private final PatternContext patternContext;
 
     public Grid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.grid = new boolean[rows][columns];
+        this.grid = new CellGrid(rows, columns);
         this.strategy = new OriginalStrategy();
+        this.patternContext = new PatternContext();
     }
 
     private boolean isOnGrid(int x, int y) {
@@ -32,12 +36,12 @@ public class Grid implements GridInterface {
     }
 
     public boolean getCellState(int x, int y) {
-        return this.grid[x][y];
+        return this.grid.getState(x, y);
     }
 
     public void toggleCellState(int x, int y) {
         if (isOnGrid(x, y)) {
-            this.grid[x][y] = !this.grid[x][y];
+            this.grid.setState(x, y, !this.grid.getState(x, y));
         }
     }
 
@@ -48,7 +52,7 @@ public class Grid implements GridInterface {
                 if (i == 0 && j == 0) continue;
                 int r = (x + rows + i) % rows;
                 int c = (y + columns +j) % columns;
-                if (isOnGrid(r, c) && grid[r][c]) {
+                if (isOnGrid(r, c) && grid.getState(r, c)) {
                     liveNeighbors++;
                 }
             }
@@ -57,26 +61,6 @@ public class Grid implements GridInterface {
     }
 
     public boolean nextGeneration() {
-//        boolean[][] newGrid = new boolean[rows][columns];
-//        boolean hasChanged = false;
-//        this.generation++;
-//
-//        for (int row = 0; row < rows; row++) {
-//            for (int col = 0; col < columns; col++) {
-//                int liveNeighbors = countLiveNeighbors(row, col);
-//                if (grid[row][col]) {
-//                    newGrid[row][col] = (liveNeighbors == 2 || liveNeighbors == 3);
-//                } else {
-//                    newGrid[row][col] = liveNeighbors == 3;
-//                }
-//                if (grid[row][col] != newGrid[row][col]) {
-//                    hasChanged = true;
-//                }
-//            }
-//        }
-//
-//        grid = newGrid;
-
         return strategy.nextGeneration(this);
     }
 
@@ -84,7 +68,7 @@ public class Grid implements GridInterface {
         this.generation = 0;
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
-                this.grid[i][j] = false;
+                this.grid.setState(i, j, false);
             }
         }
     }
@@ -106,11 +90,30 @@ public class Grid implements GridInterface {
         this.strategy = strategy;
     }
 
-    public void setGrid(boolean[][] grid) {
+    public void setGrid(CellGrid grid) {
         this.grid = grid;
+    }
+
+    public CellGrid getGrid() {
+        return this.grid;
+    }
+
+    @Override
+    public void setPatternState(PatternState state) {
+        patternContext.setPatternState(state);
     }
 
     public void increaseGeneration() {
         this.generation++;
+    }
+
+    @Override
+    public void placePatternOnGrid(int x, int y) {
+//        for (int i = 0; i < pattern.getRows(); i++) {
+//            for (int j = 0; j < pattern.getRows(); j++) {
+//                grid.setState((x+i) % rows, (y+j) % columns, pattern.getState(i, j));
+//            }
+//        }
+        patternContext.placePattern(x, y, this.grid);
     }
 }

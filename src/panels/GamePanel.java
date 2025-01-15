@@ -1,8 +1,8 @@
 package panels;
 
-import game.GridInterface;
-import game.ProxyGrid;
+import game.*;
 import mediators.Mediator;
+import state.*;
 import strategy.OriginalStrategy;
 import strategy.StrategyEnum;
 import strategy.DayAndNightStrategy;
@@ -32,15 +32,13 @@ public class GamePanel extends JPanel {
         cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
 
         grid = new ProxyGrid(rows, cols);
-//        grid.setStrategy(new HighLifeStrategy());
-//        grid.setStrategy(new DayAndNightStrategy());
         if (cellSize > 0) {
             mouseAdapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     int row = e.getY() / cellSize;
                     int col = e.getX() / cellSize;
-                    grid.toggleCellState(row, col);
+                    grid.placePatternOnGrid(row, col);
                     repaint();
                 }
             };
@@ -58,7 +56,7 @@ public class GamePanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 int row = e.getY() / cellSize;
                 int col = e.getX() / cellSize;
-                grid.toggleCellState(row, col);
+                grid.placePatternOnGrid(row, col);
                 repaint();
             }
         };
@@ -120,6 +118,35 @@ public class GamePanel extends JPanel {
         this.clear();
     }
 
+    public void changePattern(StateEnum patternType) {
+        switch (patternType) {
+            case CELL:
+                grid.setPatternState(new CellState());
+                break;
+            case GLIDER:
+                grid.setPatternState(new GliderState());
+                break;
+            case REPLICATOR:
+                grid.setPatternState(new ReplicatorState());
+                break;
+            case PREDECESSOR:
+                grid.setPatternState(new RocketPredecessorState());
+                break;
+            case BUTTERFLY:
+                grid.setPatternState(new ButterflyState());
+                break;
+            case ERASER1:
+                grid.setPatternState(new EraserState(1));
+                break;
+            case ERASER2:
+                grid.setPatternState(new EraserState(2));
+                break;
+            case ERASER3:
+                grid.setPatternState(new EraserState(3));
+                break;
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -130,8 +157,10 @@ public class GamePanel extends JPanel {
                     g.setColor(Color.lightGray);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
-                g.setColor(Color.darkGray);
-                g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                if (cellSize > 15) {
+                    g.setColor(Color.darkGray);
+                    g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                }
             }
         }
     }

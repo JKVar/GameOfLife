@@ -2,6 +2,7 @@ package mediators;
 
 import panels.GamePanel;
 import panels.TopPanel;
+import state.StateEnum;
 import strategy.StrategyEnum;
 
 public class Mediator implements MediatorInterface {
@@ -41,15 +42,16 @@ public class Mediator implements MediatorInterface {
     }
 
     public void resizePanels(int width, int height) {
-        final int topPanelHeight = 75;
-        final int gpp = 5; // gamePanel padding
-        topPanel.setBounds(0, 0, width, topPanelHeight);
-        gamePanel.setBounds(gpp, topPanelHeight + gpp, width - 2 * gpp, height - topPanelHeight - 2 * gpp);
         gamePanel.calculateCellSize();
     }
 
     @Override
     public void changeStrategy(StrategyEnum strategyType) {
         gamePanel.changeStrategy(strategyType);
+    }
+
+    @Override
+    public void changePattern(StateEnum patternType) {
+        gamePanel.changePattern(patternType);
     }
 }

@@ -2,6 +2,7 @@ package mediators;
 
 import panels.GamePanel;
 import panels.TopPanel;
+import state.StateEnum;
 import strategy.StrategyEnum;
 
 interface MediatorInterface {
@@ -25,4 +26,6 @@ interface MediatorInterface {
      void resizePanels(int width, int height);
 
      void changeStrategy(StrategyEnum strategyType);
+
+     void changePattern(StateEnum patternType);
 }

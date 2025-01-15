@@ -1,5 +1,6 @@
 package strategy;
 
+import game.CellGrid;
 import game.Grid;
 
 public class DayAndNightStrategy implements Strategy{
@@ -7,7 +8,7 @@ public class DayAndNightStrategy implements Strategy{
     public boolean nextGeneration(Grid grid) {
         int rows = grid.getRows();
         int columns = grid.getColumns();
-        boolean[][] newGrid = new boolean[rows][columns];
+        CellGrid newGrid = new CellGrid(rows, columns);
         boolean hasChanged = false;
         grid.increaseGeneration();
 
@@ -15,11 +16,11 @@ public class DayAndNightStrategy implements Strategy{
             for (int col = 0; col < columns; col++) {
                 int liveNeighbors = grid.countLiveNeighbors(row, col);
                 if (grid.getCellState(row, col)) {
-                    newGrid[row][col] = (liveNeighbors == 3 || liveNeighbors == 4 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8);
+                    newGrid.setState(row, col, (liveNeighbors == 3 || liveNeighbors == 4 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8));
                 } else {
-                    newGrid[row][col] = (liveNeighbors == 3 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8);
+                    newGrid.setState(row, col, (liveNeighbors == 3 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8));
                 }
-                if (grid.getCellState(row, col) != newGrid[row][col]) {
+                if (grid.getCellState(row, col) != newGrid.getState(row, col)) {
                     hasChanged = true;
                 }
             }

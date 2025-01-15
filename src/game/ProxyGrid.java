@@ -1,5 +1,6 @@
 package game;
 
+import state.PatternState;
 import strategy.Strategy;
 
 public class ProxyGrid implements GridInterface {
@@ -68,12 +69,30 @@ public class ProxyGrid implements GridInterface {
     }
 
     @Override
-    public void setGrid(boolean[][] grid) {
+    public void setGrid(CellGrid grid) {
         this.realGrid.setGrid(grid);
+    }
+
+    @Override
+    public CellGrid getGrid() {
+        return realGrid.getGrid();
+    }
+
+    @Override
+    public void setPatternState(PatternState state) {
+        this.realGrid.setPatternState(state);
     }
 
     public boolean isStarted() {
         return this.started;
     }
+
+    @Override
+    public void placePatternOnGrid(int x, int y) {
+        if (!started) {
+            this.realGrid.placePatternOnGrid(x, y);
+        }
+    }
+
 
 }
