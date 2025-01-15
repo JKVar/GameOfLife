@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
         this.rows = rows;
         this.cols = cols;
         this.mediator = mediator;
-        cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+        cellSize = Math.min(getWidth()/cols, getHeight()/rows);
 
         grid = new ProxyGrid(rows, cols);
         if (cellSize > 0) {
@@ -38,7 +38,8 @@ public class GamePanel extends JPanel {
                 public void mousePressed(MouseEvent e) {
                     int row = e.getY() / cellSize;
                     int col = e.getX() / cellSize;
-                    grid.placePatternOnGrid(row, col);
+                    if (row < grid.getRows() && col < grid.getColumns())
+                        grid.placePatternOnGrid(row, col);
                     repaint();
                 }
             };
@@ -49,14 +50,15 @@ public class GamePanel extends JPanel {
     }
 
     public void calculateCellSize() {
-        cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+        cellSize = Math.min(getWidth()/cols, getHeight()/rows);
         removeMouseListener(mouseAdapter);
         mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int row = e.getY() / cellSize;
                 int col = e.getX() / cellSize;
-                grid.placePatternOnGrid(row, col);
+                if (row < grid.getRows() && col < grid.getColumns())
+                    grid.placePatternOnGrid(row, col);
                 repaint();
             }
         };
@@ -157,10 +159,16 @@ public class GamePanel extends JPanel {
                     g.setColor(Color.lightGray);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
-                if (cellSize > 15) {
-                    g.setColor(Color.darkGray);
-                    g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                }
+            }
+        }
+
+        if (cellSize > 5) {
+            g.setColor(Color.darkGray);
+            for (int i = 0; i < Math.max(grid.getColumns(), grid.getRows()); i++) {
+                if (i < grid.getRows())
+                    g.drawLine(0, (i+1)*cellSize, grid.getColumns()*cellSize, (i+1)*cellSize);
+                if (i < grid.getColumns())
+                    g.drawLine((i+1)*cellSize, 0, (i+1)*cellSize, grid.getRows()*cellSize);
             }
         }
     }

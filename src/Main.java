@@ -9,7 +9,7 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         final int rows = 100;
-        final int cols = 100;
+        final int cols = 200;
 
         Mediator mediator = new Mediator();
         GamePanel gamePanel = new GamePanel(mediator, rows, cols);
