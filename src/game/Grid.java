@@ -109,11 +109,6 @@ public class Grid implements GridInterface {
 
     @Override
     public void placePatternOnGrid(int x, int y) {
-//        for (int i = 0; i < pattern.getRows(); i++) {
-//            for (int j = 0; j < pattern.getRows(); j++) {
-//                grid.setState((x+i) % rows, (y+j) % columns, pattern.getState(i, j));
-//            }
-//        }
         patternContext.placePattern(x, y, this.grid);
     }
 }
