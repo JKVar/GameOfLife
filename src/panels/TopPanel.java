@@ -11,6 +11,7 @@ public class TopPanel extends JPanel {
 
     public TopPanel(Mediator mediator) {
         setBackground(new Color(8, 147, 82));
+        setPreferredSize(new Dimension(0, 75));
         setVisible(true);
 
         generationLabel = new JLabel("Number of generations: 0");

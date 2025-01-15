@@ -24,9 +24,9 @@ public class MainFrame extends JFrame {
             }
         });
 
-        setMinimumSize(new Dimension(600, 700));
+        setMinimumSize(new Dimension(800, 700));
         setTitle("Game of life");
-        setLayout(null);
+        setLayout(new BorderLayout());
         setVisible(true);
         setBackground(Color.BLACK);
         setResizable(true);
