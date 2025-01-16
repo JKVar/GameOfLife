@@ -27,24 +27,29 @@ public class Grid implements GridInterface {
         return x >= 0 && x < rows && y >= 0 && y < columns;
     }
 
+    @Override
     public int getRows() {
         return rows;
     }
 
+    @Override
     public int getColumns() {
         return columns;
     }
 
+    @Override
     public boolean getCellState(int x, int y) {
         return this.grid.getState(x, y);
     }
 
+    @Override
     public void toggleCellState(int x, int y) {
         if (isOnGrid(x, y)) {
             this.grid.setState(x, y, !this.grid.getState(x, y));
         }
     }
 
+    @Override
     public int countLiveNeighbors(int x, int y) {
         int liveNeighbors = 0;
         for (int i = -1; i <= 1; i++) {
@@ -60,19 +65,23 @@ public class Grid implements GridInterface {
         return liveNeighbors;
     }
 
+    @Override
     public boolean nextGeneration() {
         return strategy.nextGeneration(this);
     }
 
+    @Override
     public void clearGrid() {
         this.generation = 0;
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
                 this.grid.setState(i, j, false);
+                this.grid.setDirty(i, j, false);
             }
         }
     }
 
+    @Override
     public int getGeneration() {
         return this.generation;
     }
@@ -82,18 +91,22 @@ public class Grid implements GridInterface {
         this.started = started;
     }
 
+    @Override
     public boolean isStarted() {
         return this.started;
     }
 
+    @Override
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
 
+    @Override
     public void setGrid(CellGrid grid) {
         this.grid = grid;
     }
 
+    @Override
     public CellGrid getGrid() {
         return this.grid;
     }
@@ -103,6 +116,7 @@ public class Grid implements GridInterface {
         patternContext.setPatternState(state);
     }
 
+    @Override
     public void increaseGeneration() {
         this.generation++;
     }

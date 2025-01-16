@@ -2,11 +2,10 @@ package state;
 
 import game.CellGrid;
 
-public class RocketPredecessorState implements PatternState {
-    private final CellGrid pattern;
+public class RocketPredecessorState extends PatternState {
 
     public RocketPredecessorState() {
-        pattern = new CellGrid(5, 8);
+        CellGrid pattern = new CellGrid(5, 8);
         for (int i = 0; i < 8; i++)
             pattern.setState(2, i, true);
 
@@ -21,17 +20,7 @@ public class RocketPredecessorState implements PatternState {
         pattern.setState(3, 0, true);
         pattern.setState(3, 2, true);
         pattern.setState(3, 3, true);
-    }
 
-    @Override
-    public void placePattern(int x, int y, CellGrid grid) {
-        int rows = grid.getRows();
-        int columns = grid.getCols();
-
-        for (int i = 0; i < pattern.getRows(); i++) {
-            for (int j = 0; j < pattern.getCols(); j++) {
-                grid.setState((x+i) % rows, (y+j) % columns, pattern.getState(i, j));
-            }
-        }
+        setPattern(pattern);
     }
 }

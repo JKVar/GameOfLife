@@ -41,4 +41,25 @@ public class CellGrid implements Prototype {
         
         return clonedGrid;
     }
+
+    public String toString() {
+        StringBuilder grd = new StringBuilder();
+
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                grd.append(grid[i][j].isDirty() ? 1 : 0).append(" ");
+            }
+            grd.append('\n');
+        }
+        grd.append('\n');
+        return grd.toString();
+    }
+
+    public void setDirty(int x, int y, boolean dirty) {
+        grid[x][y].setDirty(dirty);
+    }
+
+    public boolean isDirty(int x, int y) {
+        return grid[x][y].isDirty();
+    }
 }
