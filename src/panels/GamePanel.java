@@ -3,10 +3,7 @@ package panels;
 import game.*;
 import mediators.Mediator;
 import state.*;
-import strategy.OriginalStrategy;
-import strategy.StrategyEnum;
-import strategy.DayAndNightStrategy;
-import strategy.HighLifeStrategy;
+import strategy.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,6 +108,9 @@ public class GamePanel extends JPanel {
                 break;
             case DAY_AND_NIGHT:
                 grid.setStrategy(new DayAndNightStrategy());
+                break;
+            case WEIGHT_OF_LIFE:
+                grid.setStrategy(new WeightOfLifeStrategy());
                 break;
             default:
                 grid.setStrategy(new OriginalStrategy());

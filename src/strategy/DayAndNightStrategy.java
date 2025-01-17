@@ -1,14 +1,11 @@
 package strategy;
 
+import strategy.rules.CombinedRule;
+import strategy.rules.creation.B3678;
+import strategy.rules.survival.S34678;
+
 public class DayAndNightStrategy extends Strategy {
-
-    @Override
-    protected boolean survivalRule(int liveNeighbors) {
-        return (liveNeighbors == 3 || liveNeighbors == 4 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8);
-    }
-
-    @Override
-    protected boolean creationRule(int liveNeighbors) {
-        return (liveNeighbors == 3 || liveNeighbors == 6 || liveNeighbors == 7 || liveNeighbors == 8);
+    public DayAndNightStrategy() {
+        combinedRule = new CombinedRule(new B3678(), new S34678());
     }
 }

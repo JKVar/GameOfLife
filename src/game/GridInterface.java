@@ -14,7 +14,7 @@ public interface GridInterface {
 
     void placePatternOnGrid(int x, int y);
 
-    int countLiveNeighbors(int x, int y);
+    int countAliveNeighbors(int x, int y);
 
     boolean nextGeneration();
 

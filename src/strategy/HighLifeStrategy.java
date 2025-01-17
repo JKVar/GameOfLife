@@ -1,14 +1,11 @@
 package strategy;
 
+import strategy.rules.CombinedRule;
+import strategy.rules.creation.B36;
+import strategy.rules.survival.S23;
+
 public class HighLifeStrategy extends Strategy {
-
-    @Override
-    protected boolean survivalRule(int liveNeighbors) {
-        return super.survivalRule(liveNeighbors);
-    }
-
-    @Override
-    protected boolean creationRule(int liveNeighbors) {
-        return (liveNeighbors == 3 || liveNeighbors == 6);
+    public HighLifeStrategy() {
+        combinedRule = new CombinedRule(new S23(), new B36());
     }
 }

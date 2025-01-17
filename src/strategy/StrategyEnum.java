@@ -3,7 +3,8 @@ package strategy;
 public enum StrategyEnum {
     ORIGINAL(0),
     HIGH_LIFE(1),
-    DAY_AND_NIGHT(2);
+    DAY_AND_NIGHT(2),
+    WEIGHT_OF_LIFE(3);
 
     final int value;
 

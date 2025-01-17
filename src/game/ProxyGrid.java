@@ -35,8 +35,8 @@ public class ProxyGrid implements GridInterface {
     }
 
     @Override
-    public int countLiveNeighbors(int x, int y) {
-        return realGrid.countLiveNeighbors(x, y);
+    public int countAliveNeighbors(int x, int y) {
+        return realGrid.countAliveNeighbors(x, y);
     }
 
     @Override

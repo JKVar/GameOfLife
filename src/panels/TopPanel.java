@@ -20,7 +20,7 @@ public class TopPanel extends JPanel {
         JButton clear = new JButton("Clear");
         JButton next = new JButton("Next");
         JSlider slider = new JSlider();
-        String[] options = {"Original", "HighLife", "Day & Night"};
+        String[] options = {"Original", "HighLife", "Day & Night", "Weight of Life"};
         JComboBox<String> dropDownMenu = new JComboBox<>(options);
 
         start.addActionListener(_ -> mediator.start());

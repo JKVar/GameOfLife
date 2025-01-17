@@ -45,7 +45,7 @@ public class Grid implements GridInterface {
         }
     }
 
-    public int countLiveNeighbors(int x, int y) {
+    public int countAliveNeighbors(int x, int y) {
         int liveNeighbors = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
