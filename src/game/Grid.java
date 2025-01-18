@@ -15,6 +15,10 @@ public class Grid implements GridInterface {
     private Strategy strategy;
     private final PatternContext patternContext;
 
+    public static final int EMPTY = 0;
+    public static final int RANDOM = 1;
+    public static final int FROM_FILE = 2;
+
     public Grid(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;

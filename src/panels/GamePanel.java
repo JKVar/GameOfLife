@@ -1,5 +1,9 @@
 package panels;
 
+import factory.EmptyGridFactory;
+import factory.FileGridFactory;
+import factory.GridFactory;
+import factory.RandomGridFactory;
 import game.*;
 import mediators.Mediator;
 import state.*;
@@ -11,25 +15,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GamePanel extends JPanel {
-    private final GridInterface grid;
+    private GridInterface grid;
     private final Mediator mediator;
-    private final int rows;
-    private final int cols;
     private final Timer timer;
     private MouseAdapter mouseAdapter;
+    private int rows;
+    private int cols;
     private int cellSize;
     private int delay = 503;
 
-    public GamePanel(Mediator mediator, int rows, int cols) {
+    public GamePanel(Mediator mediator) {
         setBackground(Color.black);
-        setVisible(true);
-        this.rows = rows;
-        this.cols = cols;
+        setVisible(false);
         this.mediator = mediator;
-        cellSize = Math.min(getWidth()/cols, getHeight()/rows);
 
-        grid = new ProxyGrid(rows, cols);
-        if (cellSize > 0) {
+        this.timer = new Timer(delay, _ -> nextGeneration());
+    }
+
+    public void calculateCellSize() {
+        if (cols > 0 && rows > 0) {
+            cellSize = Math.min(getWidth()/cols, getHeight()/rows);
+            removeMouseListener(mouseAdapter);
             mouseAdapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -42,24 +48,6 @@ public class GamePanel extends JPanel {
             };
             addMouseListener(mouseAdapter);
         }
-
-        this.timer = new Timer(delay, _ -> nextGeneration());
-    }
-
-    public void calculateCellSize() {
-        cellSize = Math.min(getWidth()/cols, getHeight()/rows);
-        removeMouseListener(mouseAdapter);
-        mouseAdapter = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int row = e.getY() / cellSize;
-                int col = e.getX() / cellSize;
-                if (row < grid.getRows() && col < grid.getColumns())
-                    grid.placePatternOnGrid(row, col);
-                repaint();
-            }
-        };
-        addMouseListener(mouseAdapter);
     }
 
     public void start() {
@@ -147,6 +135,23 @@ public class GamePanel extends JPanel {
                 grid.setPatternState(new EraserState(3));
                 break;
         }
+    }
+
+    public void createGrid(int gridType, int rows, int cols) {
+        System.out.println("grid");
+        GridFactory gridFactory = switch (gridType) {
+            case Grid.RANDOM -> new RandomGridFactory(rows, cols);
+            case Grid.FROM_FILE -> new FileGridFactory();
+            default -> new EmptyGridFactory(rows, cols);
+        };
+
+        this.rows = rows;
+        this.cols = cols;
+        grid = new ProxyGrid(rows, cols);
+        grid.setGrid(gridFactory.createGrid());
+
+        calculateCellSize();
+        setVisible(true);
     }
 
     @Override

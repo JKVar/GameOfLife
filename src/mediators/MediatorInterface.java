@@ -1,5 +1,6 @@
 package mediators;
 
+import frame.MenuFrame;
 import panels.GamePanel;
 import panels.TopPanel;
 import state.StateEnum;
@@ -10,6 +11,8 @@ interface MediatorInterface {
      void addGamePanel(GamePanel gamePanel);
 
      void addTopPanel(TopPanel topPanel);
+
+     void addMenuFrame(MenuFrame menuFrame);
 
      void start();
 
@@ -28,4 +31,8 @@ interface MediatorInterface {
      void changeStrategy(StrategyEnum strategyType);
 
      void changePattern(StateEnum patternType);
+
+     void closeMenu();
+
+     void createGrid(int gridType, int rows, int cols);
 }
