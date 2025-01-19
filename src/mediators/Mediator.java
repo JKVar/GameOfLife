@@ -80,4 +80,9 @@ public class Mediator implements MediatorInterface {
     public void createGrid(int gridType, int rows, int cols) {
         gamePanel.createGrid(gridType, rows, cols);
     }
+
+    @Override
+    public void saveGrid() {
+        gamePanel.saveGrid();
+    }
 }

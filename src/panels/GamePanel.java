@@ -13,6 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GamePanel extends JPanel {
     private GridInterface grid;
@@ -80,7 +83,6 @@ public class GamePanel extends JPanel {
     }
 
     public void changeDelay(int speed) {
-//        this.delay =  1005 - speed*10;
         this.delay = (int) (1005 - Math.log(speed+1)/Math.log(Math.pow(100, 1.0/1000)));
         timer.stop();
         timer.setDelay(delay);
@@ -90,6 +92,7 @@ public class GamePanel extends JPanel {
     }
 
     public void changeStrategy(StrategyEnum strategyType) {
+        timer.stop();
         switch (strategyType) {
             case HIGH_LIFE:
                 grid.setStrategy(new HighLifeStrategy());
@@ -105,7 +108,7 @@ public class GamePanel extends JPanel {
                 break;
         }
 
-        this.clear();
+//        this.clear();
     }
 
     public void changePattern(StateEnum patternType) {
@@ -145,13 +148,36 @@ public class GamePanel extends JPanel {
             default -> new EmptyGridFactory(rows, cols);
         };
 
-        this.rows = rows;
-        this.cols = cols;
-        grid = new ProxyGrid(rows, cols);
-        grid.setGrid(gridFactory.createGrid());
+        CellGrid cellGrid = gridFactory.createGrid();
+        this.rows = cellGrid.getRows();
+        this.cols = cellGrid.getCols();
+        grid = new ProxyGrid(this.rows, this.cols);
+        grid.setGrid(cellGrid);
 
         calculateCellSize();
         setVisible(true);
+    }
+
+    public void saveGrid() {
+        String fileName = "grid.dat";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            int rows = grid.getRows();
+            int cols = grid.getColumns();
+            writer.write(rows + " " + cols);
+            writer.newLine();
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    writer.write((grid.getCellState(i, j) ? 1 : 0) + " ");
+                }
+                writer.newLine();
+            }
+
+            System.out.println("Matrix written to " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
     }
 
     @Override

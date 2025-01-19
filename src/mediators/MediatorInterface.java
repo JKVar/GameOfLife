@@ -35,4 +35,6 @@ interface MediatorInterface {
      void closeMenu();
 
      void createGrid(int gridType, int rows, int cols);
+
+     void saveGrid();
 }

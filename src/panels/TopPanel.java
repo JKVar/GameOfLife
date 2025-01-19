@@ -19,6 +19,7 @@ public class TopPanel extends JPanel {
         JButton stop = new JButton("Stop");
         JButton clear = new JButton("Clear");
         JButton next = new JButton("Next");
+        JButton save = new JButton("Save Grid");
         JSlider slider = new JSlider();
         String[] options = {"Original", "HighLife", "Day & Night", "Weight of Life"};
         JComboBox<String> dropDownMenu = new JComboBox<>(options);
@@ -28,6 +29,7 @@ public class TopPanel extends JPanel {
         clear.addActionListener(_ -> mediator.clear());
         next.addActionListener(_ -> mediator.next());
         slider.addChangeListener(_ -> mediator.setSpeed(slider.getValue()));
+        save.addActionListener(_ -> mediator.saveGrid());
         dropDownMenu.addActionListener(_ -> {
             int selectedStrategy = dropDownMenu.getSelectedIndex();
             mediator.changeStrategy(StrategyEnum.fromValue(selectedStrategy));
@@ -40,6 +42,7 @@ public class TopPanel extends JPanel {
         add(generationLabel);
         add(slider);
         add(dropDownMenu);
+        add(save);
     }
 
     public void displayGeneration(int generation) {
